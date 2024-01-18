@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: todo_api
+    volumes:
+      - ./todo:/app
+      - ./requirements.txt:/app/requirements.txt
+    ports:
+      - "5000:5000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=todo.settings
+      - DEBUG=True
+      - DATABASE_URL=postgres://admin:admin1234@postgres:2000/todo_db
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13
+    container_name: todoapp_db
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: todoadmin
+      POSTGRES_PASSWORD: todoadmin1234
+    ports:
+      - "2000:2000"
